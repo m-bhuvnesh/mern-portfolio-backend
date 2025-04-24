@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 // ✅ CORS setup
 app.use(
@@ -29,6 +29,9 @@ mongoose
   .catch((err) => console.log("DB Error:", err));
 
 // ✅ Routes
+app.get("/", (req, res) => {
+  res.send("Server is live!");
+});
 const contactRoute = require("./routes/contact");
 app.use("/api/contact", contactRoute);
 
