@@ -11,11 +11,20 @@ const PORT = process.env.PORT || 5000;
 // ✅ CORS setup
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://bhuvneshdev.netlify.app/"], // Replace with your Vercel frontend domain
+    origin: function (origin, callback) {
+      console.log("Origin:", origin); // Logs the frontend origin
+      const allowedOrigins = ["http://localhost:5173", "https://bhuvneshdev.netlify.app"];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST"],
     credentials: true,
   })
 );
+
 
 app.use(express.json());
 
