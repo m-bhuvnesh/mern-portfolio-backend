@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // ✅ CORS setup
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-frontend.vercel.app"], // Replace with your Vercel frontend domain
+    origin: ["http://localhost:5173", "https://bhuvneshdev.netlify.app/"], // Replace with your Vercel frontend domain
     methods: ["GET", "POST"],
     credentials: true,
   })
