@@ -29,13 +29,24 @@ app.use(
 app.use(express.json());
 
 // ✅ MongoDB connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("DB Error:", err));
+let isConnected = false;
+
+async function connectDB() {
+  if (isConnected) return;
+
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.log("DB Error:", err);
+  }
+}
+
+connectDB();
 
 // ✅ Routes
 app.get("/", (req, res) => {
