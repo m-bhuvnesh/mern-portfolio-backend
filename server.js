@@ -6,14 +6,15 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// ✅ CORS setup
+// CORS
 app.use(
   cors({
     origin: function (origin, callback) {
-      console.log("Origin:", origin); // Logs the frontend origin
-      const allowedOrigins = ["http://localhost:5173", "https://bhuvneshdev.netlify.app"];
+      const allowedOrigins = [
+        "http://localhost:5173",
+        "https://bhuvneshdev.netlify.app",
+      ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -25,38 +26,29 @@ app.use(
   })
 );
 
-
 app.use(express.json());
 
-// ✅ MongoDB connection
+// MongoDB
 let isConnected = false;
-
 async function connectDB() {
   if (isConnected) return;
-
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI);
     isConnected = true;
     console.log("MongoDB Connected");
   } catch (err) {
     console.log("DB Error:", err);
   }
 }
-
 connectDB();
 
-// ✅ Routes
+// Routes
 app.get("/", (req, res) => {
   res.send("Server is live!");
 });
+
 const contactRoute = require("./routes/contact");
 app.use("/api/contact", contactRoute);
 
-// ✅ Start server
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
+// 👇 VERY IMPORTANT FOR VERCEL
 module.exports = app;
